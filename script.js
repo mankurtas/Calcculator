@@ -16,8 +16,8 @@ numberButtons; operationButtons; equalsButton; deleteButton; allClearButton; pre
 susidėti eventListeners and surinktų const; */
 
 //? rekomenduojamas darbo flow
-/* pasirašom klasę su metodais, bet nesirašo dar jų implementacijos;
-susirenkam į constantas HTML elementus;
+/* pasirašom klasę su metodais, bet nesirašo dar jų implementacijos; +
+susirenkam į constantas HTML elementus; +
 susikuriam naują objektą naudodami sukurtą klasę, galima įsidėt sukurtą objektą į pvz. const calculator; 
 apsirašom event listenerius - kiekvienas iš jų kaip callback funkciją kviečia calculator objekto metodą atitinkantį veiksmą ir papildomai calculator.updateDisplay()
 kad atnaujinti UI; 
@@ -28,6 +28,10 @@ kai visas funkcionalumas veikia, CSS faile gražinam UI, rekomenduoju naudot gri
 //! nebūtina sekti rekomendacijų, nes galimų sprendimų yra n, bet surašiau, kad padėt, jei išvis nėra minčių;
 //! geriau skirkit pradžioj šiek tiek laiko pagalvot bendrai bendram planui aptart ir gal savo flow sugalvosit
 
+//? objektas
+
+// const calculator = new Calculator;
+
 class Calculator {
   constructor() {
     this.previousOperandTextElement = previousOperandTextElement;
@@ -37,9 +41,23 @@ class Calculator {
     this.operation = "";
   }
 
-  updateDisplay() {}
-  clear() {}
-  delete() {}
+  updateDisplay() {
+    this.currentOperandTextElement.innerText = this.currentOperand;
+    if (this.operation != null) {
+      this.previousOperandTextElement.innerText = `${this.previousOperand} ${this.operation}`;
+    } else {
+      this.previousOperandTextElement.innerText = "";
+    }
+  }
+
+  clear() {
+    this.currentOperand = "";
+    this.previousOperand = "";
+    this.operation = undefined;
+  }
+  delete() {
+    this.currentOperand = this.currentOperand.toString().slice(0, -1);
+  }
   appendNumber(number) {
     if (number === "." && this.currentOperand.includes(".")) return;
     this.currentOperand = this.currentOperand.toString() + number.toString();
@@ -114,18 +132,18 @@ equalsButton.addEventListener("click", (button) => {
   calculator.updateDisplay();
 });
 
-//   allClearButton.addEventListener('click', button => {
+allClearButton.addEventListener("click", (button) => {
+  calculator.clear();
 
-//     calculator.clear()
+  calculator.updateDisplay();
+});
 
-//     calculator.updateDisplay()
+deleteButton.addEventListener("click", (button) => {
+  calculator.delete();
 
-//   })
-
-//   deleteButton.addEventListener('click', button => {
-
-//     calculator.delete()
-
-//     calculator.updateDisplay()
-
-//   })
+  calculator.updateDisplay();
+});
+const calculator = new Calculator(
+  previousOperandTextElement,
+  currentOperandTextElement
+);
